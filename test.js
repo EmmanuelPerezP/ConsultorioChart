@@ -1,6 +1,17 @@
 var ctx = document.getElementById('chart0').getContext('2d');
+var ctx1 = document.getElementById('chart1').getContext('2d');
+var ctx2 = document.getElementById('chart2').getContext('2d');
+var ctx3 = document.getElementById('chart3').getContext('2d');
 
-var ctx2 = document.getElementById('chart1').getContext('2d');
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
 
 function createGradient(){
       grd = ctx.createLinearGradient(0.000, 150.000, 1700.000, 150.000);
@@ -22,7 +33,8 @@ function parseData(results) {
      * @return {data} the data parsed
      */
 
-    let datasetsPerYear = new Array(12).fill(0);
+    let fillColor = createGradient();
+    let datasetsPerYear = [];
     let year = new Array(12).fill(0);
     // results["data"][index] = ["860363", "SEDIMEC", "Dictámenes Licencia", "273823", "V8KAF156270", "MED4581", "2019-07-09 15:40:10.0", "0", "3", "3", "5800.00", "19428.00", "GREENPAY"]
     let currentYear = 2016;  // first year
@@ -30,13 +42,26 @@ function parseData(results) {
         const dateString = results["data"][index][6];   // time string
         var date = new Date(dateString);
         if (currentYear != date.getFullYear()) {    // this algorithm asumes dataset is ordered by date
-            datasetsPerYear.push(year);
+            dataset = {
+                label: currentYear,
+                data: year,
+                backgroundColor: getRandomColor(),
+            }
+            datasetsPerYear.push(dataset);
             year = new Array(12).fill(0);
+            currentYear = date.getFullYear();
         }
         year[date.getMonth()] += parseInt(results["data"][index][8]);
     }
-    console.log(datasetsPerYear);
-    return year;
+    // push last year
+    dataset = {
+        label: currentYear,
+        data: year,
+        backgroundColor: getRandomColor(),
+    }
+    datasetsPerYear.push(dataset);
+
+    return datasetsPerYear;
 }
 
 
@@ -53,28 +78,29 @@ function createChart(data, fillColor, context) {
         // The data for our dataset
         data: {
             labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre","Octubre", "Noviembre", "Diciembre"],
-            datasets: [{
-                label: "2018",
-                backgroundColor: fillColor,
-                borderColor: 'rgb(0, 123, 255)',
-                data: data,
-            }]
+            datasets: data
         },
 
         // Configuration options go here
-        options: {}
+        options: {
+            responsive: true,
+            aspectRatio: 1.5,
+        }
     });
     return chart;
 }
 
-
 Papa.parse("Reporte.csv", {
 	download: true,
 	complete: function(results) {
-        let months = parseData(results);
+        let datasets = parseData(results);
+        console.log(datasets);
         let fillColor = createGradient();
-        let chart = createChart(months, fillColor, ctx);
-        let chart2 = createChart(months, fillColor, ctx2);
+        let chart = createChart(datasets, fillColor, ctx);
+        let chart1 = createChart([datasets[1]], fillColor, ctx1);
+        let chart2 = createChart([datasets[2]], fillColor, ctx2);
+        let chart3 = createChart([datasets[3]], fillColor, ctx3);
+        // let chart = createChart(datasets, fillColor, ctx);
 	}
 });
 
