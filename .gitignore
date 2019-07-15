@@ -1,0 +1,10 @@
+*.sqlite
+*.sqlite3
+*.db
+*.csv
+
+# npm
+node_modules
+package-lock.json
+*.log
+*.gz
