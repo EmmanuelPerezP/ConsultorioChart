@@ -41,8 +41,8 @@ export default class Database {
 
   async dictamenesPorMes (year) {
     let sql = `
-      SELECT strftime("%Y",Fecha) AS Year,
-      strftime("%m",Fecha) AS Month,
+      SELECT CAST(strftime("%Y",Fecha) as integer) AS Year,
+      CAST(strftime("%m",Fecha) as integer) AS Month,
       SUM(Comprado) AS Total
       FROM compras
       WHERE Year = ?
@@ -63,6 +63,47 @@ export default class Database {
     return result;
   }
 
+  async dictamenesPorDiaSemana (year) {
+    let sql = `
+      SELECT strftime("%w",Fecha) AS DayOfWeek,
+      SUM(Comprado) AS Total
+      FROM compras
+      GROUP BY strftime("%w", Fecha) 
+      ORDER BY strftime("%w", Fecha);
+    `;
+    // wrap query in a promise to return result
+    let promise = new Promise((resolve, reject) => {
+      this.db.all(sql, [year], (err, rows) => {
+        if (err) {
+          throw err;
+        }
+        resolve(rows);
+      });
+    });
+    let result = await promise; // pause till the promise resolves 
+    return result;
+  }
+
+  async dictamenesPorDiaMes (year) {
+    let sql = `
+      SELECT strftime("%d",Fecha) AS DayOfMonth,
+      SUM(Comprado) AS Total
+      FROM compras
+      GROUP BY strftime("%d", Fecha) 
+      ORDER BY strftime("%d", Fecha);
+    `;
+    // wrap query in a promise to return result
+    let promise = new Promise((resolve, reject) => {
+      this.db.all(sql, [], (err, rows) => {
+        if (err) {
+          throw err;
+        }
+        resolve(rows);
+      });
+    });
+    let result = await promise; // pause till the promise resolves 
+    return result;
+  }
 
 
 }

@@ -27,6 +27,8 @@ compras en este caso seria la tabla anterior
 ```
 
 ## Querys
+strftime reference
+https://www.sqlite.org/lang_datefunc.html
 
  ### Query para sacar cantidad de dictamenes por mes
  ```
@@ -39,7 +41,7 @@ compras en este caso seria la tabla anterior
  ### Query para sacar cantidad de dictamenes por mes con variable 2017
  ```
   SELECT strftime("%Y",Fecha) AS Year,
-  strftime("%m",Fecha) AS Month,
+  CAST(strftime("%m",Fecha) as integer) AS Month,
   SUM(Comprado) AS Total
   FROM compras
   WHERE Year = "2017"
@@ -55,6 +57,16 @@ compras en este caso seria la tabla anterior
   GROUP BY strftime("%w", Fecha) 
   ORDER BY strftime("%w", Fecha);
  ```
+
+ ### Query para sacar cantidad de dictamenes por dia del mes
+  ```
+  SELECT strftime("%d",Fecha) AS DayOfWeek,
+  SUM(Comprado) AS Total
+  FROM compras
+  GROUP BY strftime("%d", Fecha) 
+  ORDER BY strftime("%d", Fecha);
+ ```
+
 
  cobija = nina
  la mama quemo la cobija porq la metio al  microondas
