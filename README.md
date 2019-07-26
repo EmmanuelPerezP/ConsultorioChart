@@ -44,3 +44,26 @@ compras en este caso seria la tabla anterior
   GROUP BY strftime("%w", Fecha) 
   ORDER BY strftime("%w", Fecha);
  ```
+
+ cobija = nina
+ la mama quemo la cobija porq la metio al  microondas
+
+ Boo! discovery kids show
+ color favorito: rosado
+ bananas en pijamas serie favorita plushie
+
+
+ ## Node
+ To use the `import` syntax we still need to compile with babel for node js
+ https://stackoverflow.com/questions/39436322/node-js-syntaxerror-unexpected-token-import#comment98536213_39436580
+ https://nodejs.org/api/esm.html#esm_ecmascript_modules
+
+ see this blog post
+ 
+ https://www.freecodecamp.org/news/how-to-enable-es6-and-beyond-syntax-with-node-and-express-68d3e11fe1ab/ 
+ https://dev.to/dhruv/writing-es6-in-your-nodejs-applications-33jk 
+ https://medium.com/@jmitchell1991/how-to-use-es6-and-es7-in-nodejs-and-deploy-it-7f2da7d9a81e
+
+
+ problem with path '.../public'
+ see this: https://stackoverflow.com/questions/7083045/fs-how-do-i-locate-a-parent-folder
