@@ -1,4 +1,6 @@
-# SQLite config
+## Sist
+
+## SQLite config
 Crear tabla de compras
 
 ```
@@ -60,13 +62,45 @@ https://www.sqlite.org/lang_datefunc.html
 
  ### Query para sacar cantidad de dictamenes por dia del mes
   ```
-  SELECT strftime("%d",Fecha) AS DayOfWeek,
+  SELECT strftime("%d",Fecha) AS DayOfMonth,
   SUM(Comprado) AS Total
   FROM compras
   GROUP BY strftime("%d", Fecha) 
   ORDER BY strftime("%d", Fecha);
  ```
 
+ ### Query para sacar cantidad de dictamenes por hora
+  ```
+  SELECT strftime("%H",Fecha) AS DayOfWeek,
+  SUM(Comprado) AS Total
+  FROM compras
+  GROUP BY strftime("%H", Fecha) 
+  ORDER BY strftime("%H", Fecha);
+ ```
+
+ ### Query para sacar dictamense por semana del mes (en progreso todavia no funciona)
+
+```
+SELECT "Primer Semana" AS Week,
+SUM(Comprado) AS Total
+FROM compras
+WHERE strftime("%d", Fecha) BETWEEN "0" AND "7"
+UNION
+SELECT "Segunda Semana" AS Week,
+SUM(Comprado) AS Total
+FROM compras
+WHERE strftime("%d", Fecha) BETWEEN "8" AND "14"
+UNION
+SELECT "Tercer Semana" AS Week,
+SUM(Comprado) AS Total
+FROM compras
+WHERE strftime("%d", Fecha) BETWEEN "15" AND "21"
+UNION
+SELECT "Cuarta Semana" AS Week,
+SUM(Comprado) AS Total
+FROM compras
+WHERE strftime("%d", Fecha) BETWEEN "22" AND "31"
+```
 
  cobija = nina
  la mama quemo la cobija porq la metio al  microondas
