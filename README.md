@@ -36,6 +36,17 @@ compras en este caso seria la tabla anterior
   GROUP BY strftime("%m-%Y", Fecha) 
   ORDER BY strftime("%Y-%m", Fecha);
  ```
+ ### Query para sacar cantidad de dictamenes por mes con variable 2017
+ ```
+  SELECT strftime("%Y",Fecha) AS Year,
+  strftime("%m",Fecha) AS Month,
+  SUM(Comprado) AS Total
+  FROM compras
+  WHERE Year = "2017"
+  GROUP BY strftime("%m-%Y", Fecha) 
+  ORDER BY strftime("%Y-%m", Fecha);
+ ```
+
  ### Query para sacar cantidad de dictamenes por dia
  ```
   SELECT strftime("%w",Fecha) AS DayOfWeek,

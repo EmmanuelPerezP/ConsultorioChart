@@ -26,47 +26,9 @@ function createGradient() {
   return grd;
 }
 
-function parseData(results) {
+function createChart(data, labels, fillColor, context) {
   /**
-   * @param {data} results the results from papa.parse
-   * @return {data} the data parsed
-   */
-
-  let fillColor = createGradient();
-  let datasetsPerYear = [];
-  let year = new Array(12).fill(0);
-  // results["data"][index] = ["860363", "SEDIMEC", "Dictámenes Licencia", "273823", "V8KAF156270", "MED4581", "2019-07-09 15:40:10.0", "0", "3", "3", "5800.00", "19428.00", "GREENPAY"]
-  let currentYear = 2016; // first year
-  for (let index = 1; index < results["data"].length; index++) {
-    const dateString = results["data"][index][6]; // time string
-    let date = new Date(dateString);
-    if (currentYear != date.getFullYear()) {
-      // this algorithm asumes dataset is ordered by date
-      dataset = {
-        label: currentYear,
-        data: year,
-        backgroundColor: getRandomColor()
-      };
-      datasetsPerYear.push(dataset);
-      year = new Array(12).fill(0);
-      currentYear = date.getFullYear();
-    }
-    year[date.getMonth()] += parseInt(results["data"][index][8]);
-  }
-  // push last year
-  dataset = {
-    label: currentYear,
-    data: year,
-    backgroundColor: getRandomColor()
-  };
-  datasetsPerYear.push(dataset);
-
-  return datasetsPerYear;
-}
-
-function createChart(data, fillColor, context) {
-  /**
-   * @param data create a chart from the parsed data
+   * @param data array of datasets
    * @param context the html element to draw the canvas on
    * @param fillColor  CanvasGradient object the color or gradient to color the object
    */
@@ -76,20 +38,7 @@ function createChart(data, fillColor, context) {
 
     // The data for our dataset
     data: {
-      labels: [
-        "Enero",
-        "Febrero",
-        "Marzo",
-        "Abril",
-        "Mayo",
-        "Junio",
-        "Julio",
-        "Agosto",
-        "Septiembre",
-        "Octubre",
-        "Noviembre",
-        "Diciembre"
-      ],
+      labels: labels,
       datasets: data
     },
 
@@ -102,35 +51,32 @@ function createChart(data, fillColor, context) {
   return chart;
 }
 
-fetch('/api/dictamenes-por-mes/')
+fetch('/api/dictamenes-por-mes/2019')
 .then(function(response) {
   return response.json();
 })
 .then(function(myJson) {
+
   console.log(myJson);
 
+  let datasets = [];
+  let label = "2019";
+  const data = myJson["data"].map(x => x.Total);
+  const labels = myJson["data"].map(x => x.Month);
 
-  // let datasets = parseData(results);
-  // let dataset = myJson["data"]
-  // console.log(datasets);
-  // let fillColor = createGradient();
-  // let chart = createChart(datasets, fillColor, ctx);
+  dataset = {
+    label: label,
+    data: data,
+    backgroundColor: getRandomColor()
+  };
+  datasets.push(dataset);
+
+
+  console.log(datasets);
+  let fillColor = createGradient();
+  let chart = createChart(datasets, labels, fillColor, ctx);
   // let chart1 = createChart([dataset], fillColor, ctx1);
   // let chart2 = createChart([datasets[2]], fillColor, ctx2);
   // let chart3 = createChart([datasets[3]], fillColor, ctx3);
   // let chart = createChart(datasets, fillColor, ctx);
 });
-
-// Papa.parse("/reporte.csv", {
-//   download: true,
-//   complete: function(results) {
-//     let datasets = parseData(results);
-//     console.log(datasets);
-//     let fillColor = createGradient();
-//     let chart = createChart(datasets, fillColor, ctx);
-//     let chart1 = createChart([datasets[1]], fillColor, ctx1);
-//     let chart2 = createChart([datasets[2]], fillColor, ctx2);
-//     let chart3 = createChart([datasets[3]], fillColor, ctx3);
-//     // let chart = createChart(datasets, fillColor, ctx);
-//   }
-// });

@@ -39,29 +39,30 @@ export default class Database {
   }
 
 
-  async dictamenesPorMes () {
-
+  async dictamenesPorMes (year) {
     let sql = `
-      SELECT strftime("%Y-%m",Fecha) AS MonthYear,
+      SELECT strftime("%Y",Fecha) AS Year,
+      strftime("%m",Fecha) AS Month,
       SUM(Comprado) AS Total
       FROM compras
+      WHERE Year = ?
       GROUP BY strftime("%m-%Y", Fecha) 
       ORDER BY strftime("%Y-%m", Fecha);
-    `;
 
+    `;
     // wrap query in a promise to return result
     let promise = new Promise((resolve, reject) => {
-      this.db.all(sql, [], (err, rows) => {
+      this.db.all(sql, [year], (err, rows) => {
         if (err) {
           throw err;
         }
         resolve(rows);
       });
     });
-
     let result = await promise; // pause till the promise resolves 
-
     return result;
-
   }
+
+
+
 }
