@@ -1,7 +1,7 @@
-// let ctx = document.getElementById("chart0").getContext("2d");
+let ctx = document.getElementById("chart0").getContext("2d");
 let ctx1 = document.getElementById("chart1").getContext("2d");
-// let ctx2 = document.getElementById("chart2").getContext("2d");
-// let ctx3 = document.getElementById("chart3").getContext("2d");
+let ctx2 = document.getElementById("chart2").getContext("2d");
+let ctx3 = document.getElementById("chart3").getContext("2d");
 
 function getRandomColor() {
   let letters = "0123456789ABCDEF";
@@ -102,17 +102,20 @@ function createChart(data, fillColor, context) {
   return chart;
 }
 
-fetch('/api/dictamenes-por-mes')
+fetch('/api/dictamenes-por-mes/')
 .then(function(response) {
   return response.json();
 })
 .then(function(myJson) {
+  console.log(myJson);
+
+
   // let datasets = parseData(results);
-  let dataset = myJson["data"]
-  console.log(datasets);
-  let fillColor = createGradient();
+  // let dataset = myJson["data"]
+  // console.log(datasets);
+  // let fillColor = createGradient();
   // let chart = createChart(datasets, fillColor, ctx);
-  let chart1 = createChart([dataset], fillColor, ctx1);
+  // let chart1 = createChart([dataset], fillColor, ctx1);
   // let chart2 = createChart([datasets[2]], fillColor, ctx2);
   // let chart3 = createChart([datasets[3]], fillColor, ctx3);
   // let chart = createChart(datasets, fillColor, ctx);
