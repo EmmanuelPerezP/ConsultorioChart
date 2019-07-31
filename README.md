@@ -1,4 +1,4 @@
-# Analitycs Trend Visualization System for SEDIMEC sales data
+# Analytics Trend Visualization System for SEDIMEC sales data
 SEDIMEC AKA (Servicios digitales para medicos colegiados)
 
 This system is to analyze trends, drivers and sales of the data given by SEDIMEC in CSV
