@@ -1,7 +1,23 @@
-## Sist
+# Analitycs Trend Visualization System for SEDIMEC sales data
+SEDIMEC AKA (Servicios digitales para medicos colegiados)
+
+This system is to analyze trends, drivers and sales of the data given by SEDIMEC in CSV
+
+Made in Express.js, sqlite, bootstrap and ejs
+
+## Install
+install npm modules
+```
+npm install
+```
+run dev
+```
+npm run start
+```
+
 
 ## SQLite config
-Crear tabla de compras
+Create table for the data imported from a csv given by SEDIMEC
 
 ```
 CREATE TABLE compras("Comp" INTEGER,
@@ -20,11 +36,13 @@ CREATE TABLE compras("Comp" INTEGER,
 );
 ```
 
-Importar el csv de Sedimec  
-compras en este caso seria la tabla anterior
+Import CSV  
+`compras` being the previous table
 
 ```
 .mode csv
+```
+```
 .import Reporte.csv compras
 ```
 
@@ -32,7 +50,7 @@ compras en este caso seria la tabla anterior
 strftime reference
 https://www.sqlite.org/lang_datefunc.html
 
- ### Query para sacar cantidad de dictamenes por mes
+ ### Query to analyze dictamenes by month
  ```
   SELECT strftime("%Y-%m",Fecha) AS MonthYear,
   SUM(Comprado) AS Total
@@ -40,7 +58,7 @@ https://www.sqlite.org/lang_datefunc.html
   GROUP BY strftime("%m-%Y", Fecha) 
   ORDER BY strftime("%Y-%m", Fecha);
  ```
- ### Query para sacar cantidad de dictamenes por mes con variable 2017
+ ### Query to analyze quantity of dictamenes by monoth with variable 2017
  ```
   SELECT strftime("%Y",Fecha) AS Year,
   CAST(strftime("%m",Fecha) as integer) AS Month,
@@ -51,7 +69,7 @@ https://www.sqlite.org/lang_datefunc.html
   ORDER BY strftime("%Y-%m", Fecha);
  ```
 
- ### Query para sacar cantidad de dictamenes por dia
+ ### Query to analyze quantity of dictamenes by day
  ```
   SELECT strftime("%w",Fecha) AS DayOfWeek,
   SUM(Comprado) AS Total
@@ -60,7 +78,7 @@ https://www.sqlite.org/lang_datefunc.html
   ORDER BY strftime("%w", Fecha);
  ```
 
- ### Query para sacar cantidad de dictamenes por dia del mes
+ ### Query to analyze quantity of dictamenes by day of the month
   ```
   SELECT strftime("%d",Fecha) AS DayOfMonth,
   SUM(Comprado) AS Total
@@ -69,7 +87,7 @@ https://www.sqlite.org/lang_datefunc.html
   ORDER BY strftime("%d", Fecha);
  ```
 
- ### Query para sacar cantidad de dictamenes por hora
+ ### Query to analyze quantity of dictamenes by hour
   ```
   SELECT strftime("%H",Fecha) AS DayOfWeek,
   SUM(Comprado) AS Total
@@ -78,7 +96,7 @@ https://www.sqlite.org/lang_datefunc.html
   ORDER BY strftime("%H", Fecha);
  ```
 
- ### Query para sacar dictamense por semana del mes (en progreso todavia no funciona)
+ ### Query to analyze dictamenes by week of the month (work in progress)
 
 ```
 SELECT "Primer Semana" AS Week,
@@ -101,15 +119,6 @@ SUM(Comprado) AS Total
 FROM compras
 WHERE strftime("%d", Fecha) BETWEEN "22" AND "31"
 ```
-
- cobija = nina
- la mama quemo la cobija porq la metio al  microondas
-
- Boo! discovery kids show
- color favorito: rosado
- bananas en pijamas serie favorita plushie
-
-
  ## Node
  To use the `import` syntax we still need to compile with babel for node js
  https://stackoverflow.com/questions/39436322/node-js-syntaxerror-unexpected-token-import#comment98536213_39436580
