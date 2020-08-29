@@ -46,6 +46,44 @@ Import CSV
 .import Reporte.csv compras
 ```
 
+## Version 2.0
+
+Create table for the data imported from a csv
+
+```sql
+CREATE TABLE comprasDic(
+    "Codigo" TEXT,
+    "Cedula" TEXT,
+    "Nombre" TEXT,
+    "Fecha" TEXT,
+    "Es Apta" TEXT,
+    "Tipo" TEXT,
+    "Consulta Medica" TEXT
+);
+```
+
+## Queries version 2.0
+### Query to analyze dictamenes by month
+ ```sql
+  SELECT strftime("%Y-%m",Fecha) AS MonthYear,
+  COUNT(Codigo) AS Total
+  FROM comprasDic
+  GROUP BY strftime("%m-%Y", Fecha) 
+  ORDER BY strftime("%Y-%m", Fecha);
+ ```
+
+ ### Query to analyze quantity of dictamenes by monoth with variable 2017
+ ```sql
+ SELECT strftime("%Y",Fecha) AS Year,
+ CAST(strftime("%m",Fecha) as integer) AS Month,
+ COUNT(Codigo) AS Total
+ FROM comprasDic
+ WHERE Year = "2020"
+ GROUP BY strftime("%m-%Y", Fecha) 
+ ORDER BY strftime("%Y-%m", Fecha);
+ ```
+
+
 ## Querys
 strftime reference
 https://www.sqlite.org/lang_datefunc.html

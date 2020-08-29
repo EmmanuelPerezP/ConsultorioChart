@@ -43,8 +43,8 @@ export default class Database {
     let sql = `
       SELECT CAST(strftime("%Y",Fecha) as integer) AS Year,
       CAST(strftime("%m",Fecha) as integer) AS Month,
-      SUM(Comprado) AS Total
-      FROM compras
+      COUNT(Codigo) AS Total
+      FROM comprasDic
       WHERE Year = ?
       GROUP BY strftime("%m-%Y", Fecha) 
       ORDER BY strftime("%Y-%m", Fecha);
@@ -66,8 +66,8 @@ export default class Database {
   async dictamenesPorDiaSemana (year) {
     let sql = `
       SELECT strftime("%w",Fecha) AS DayOfWeek,
-      SUM(Comprado) AS Total
-      FROM compras
+      COUNT(Codigo) AS Total
+      FROM comprasDic
       GROUP BY strftime("%w", Fecha) 
       ORDER BY strftime("%w", Fecha);
     `;
@@ -87,8 +87,8 @@ export default class Database {
   async dictamenesPorDiaMes (year) {
     let sql = `
       SELECT strftime("%d",Fecha) AS DayOfMonth,
-      SUM(Comprado) AS Total
-      FROM compras
+      COUNT(Codigo) AS Total
+      FROM comprasDic
       GROUP BY strftime("%d", Fecha) 
       ORDER BY strftime("%d", Fecha);
     `;

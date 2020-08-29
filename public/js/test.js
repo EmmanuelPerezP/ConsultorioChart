@@ -40,7 +40,7 @@ function createChart(data, labels, fillColor, context) {
    */
   let chart = new Chart(context, {
     // The type of chart we want to create
-    type: "bar",
+    type: "line",
 
     // The data for our dataset
     data: {
@@ -72,7 +72,8 @@ function parseData(myJson, label) {
   dataset = {
     label: label,
     data: data,
-    backgroundColor: getRandomColor()
+    // backgroundColor: getRandomColor(),
+    borderColor: getRandomColor()
   };
   return dataset;
 }
@@ -94,6 +95,11 @@ async function mainChart() {
   response = await fetch('/api/dictamenes-por-mes/2019')
   myJson = await response.json();
   label = "2019";
+  datasets.push(parseData(myJson, label));
+
+  response = await fetch('/api/dictamenes-por-mes/2020')
+  myJson = await response.json();
+  label = "2020";
   datasets.push(parseData(myJson, label));
 
   let fillColor = createGradient();
@@ -138,13 +144,25 @@ fetch('/api/dictamenes-por-mes/2018')
   let chart = createChart(datasets, months, fillColor, ctx3);
 });
 
+fetch('/api/dictamenes-por-mes/2020')
+.then(function(response) {
+  return response.json();
+})
+.then(function(myJson) {
+  let datasets = [];
+  let label = "2020";
+  datasets.push(parseData(myJson, label));
+  let fillColor = createGradient();
+  let chart = createChart(datasets, months, fillColor, ctx3);
+});
+
 async function diasSemana() {
   let datasets = [];
 
   let response = await fetch('/api/dictamenes-por-dia-semana/');
   let myJson = await response.json();
   let label = "Dias de la semana";
-  myJson.data.shift();
+  // myJson.data.shift();
 
   let data = myJson.data.map(x => x.Total);
 
@@ -168,7 +186,7 @@ async function diasMes() {
   let myJson = await response.json();
   let label = "Dias del mes";
   console.log(myJson);
-  myJson.data.shift();
+  // myJson.data.shift();
 
   let data = myJson.data.map(x => x.Total);
   let labels = myJson.data.map(x => x.DayOfMonth);
